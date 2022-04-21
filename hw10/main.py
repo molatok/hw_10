@@ -1,33 +1,28 @@
 import json
 from flask import Flask
+from utils import get_candidates, candidates_form, by_id_search, by_skill_search
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def main():
-    with open("candidates.json", "r", encoding='utf-8') as candidates:
-        candidates_list = json.load(candidates)
-
-        result = '<pre>'
-        for candidate in candidates_list:
-            result += (
-                f'Имя кандидата - {candidate["name"]}\n'
-                f'Позиция кандидата - {candidate["position"]}\n'
-                f'Навыки через запятую - {candidate["skills"]}\n'
-            )
-        result += '</pre>'
-        return result
+    candidates_list = get_candidates("candidates.json")
+    return candidates_form(candidates_list)
 
 
-@app.route("/candidates/<candidate_id>")
-def candidates(candidate_id):
-    pass
+@app.route("/candidates/<int:candidate_id>")
+def page_candidate(candidate_id):
+    candidates_list = get_candidates("candidates.json")
+    candidate = by_id_search(candidates_list, candidate_id)
+    result = f'<img src="{candidate["picture"]}">'
+    return result + candidates_form([candidate])
 
 
 @app.route("/skills/<skill>")
 def skills(skill):
-    pass
+    candidates_list = get_candidates("candidates.json")
+    return candidates_form(by_skill_search(candidates_list, skill))
 
 
 app.run()

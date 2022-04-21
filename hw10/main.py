@@ -12,9 +12,9 @@ def main():
         result = '<pre>'
         for candidate in candidates_list:
             result += (
-                f'Имя кандидата - {candidate["name"]}'
-                f'Позиция кандидата - {candidate["position"]}'
-                f'Навыки через запятую - {candidate["skills"]}'
+                f'Имя кандидата - {candidate["name"]}\n'
+                f'Позиция кандидата - {candidate["position"]}\n'
+                f'Навыки через запятую - {candidate["skills"]}\n'
             )
         result += '</pre>'
         return result
